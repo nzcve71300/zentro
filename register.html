@@ -80,8 +80,14 @@
       margin-bottom: 1rem;
     }
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -137,32 +143,28 @@
       const confirm = document.getElementById('confirmPassword').value;
       const country = document.getElementById('country').value;
 
-      if (!email || !password || !confirm || !country) {
-        alert("❌ Please fill in all fields.");
+      if (password !== confirm) {
+        alert('❌ Passwords do not match.');
         return;
       }
 
-      if (password !== confirm) {
-        alert("❌ Passwords do not match.");
+      if (!email || !password || !country) {
+        alert('❌ Please fill in all fields.');
         return;
       }
 
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          data: { country }
-        }
+        options: { data: { country } }
       });
 
       if (error) {
-        alert("❌ " + error.message);
+        alert('❌ Error creating account.');
         console.error(error);
       } else {
-        alert("✅ Account created successfully. Redirecting to login...");
-        setTimeout(() => {
-          window.location.href = "login.html";
-        }, 1000);
+        alert('✅ Account created! Redirecting to login...');
+        setTimeout(() => window.location.href = 'login.html', 1000);
       }
     }
   </script>
