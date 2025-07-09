@@ -80,14 +80,8 @@
       margin-bottom: 1rem;
     }
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -143,13 +137,13 @@
       const confirm = document.getElementById('confirmPassword').value;
       const country = document.getElementById('country').value;
 
-      if (password !== confirm) {
-        alert('❌ Passwords do not match.');
+      if (!email || !password || !confirm || !country) {
+        alert("❌ Please fill in all fields.");
         return;
       }
 
-      if (!email || !password || !country) {
-        alert('❌ Please fill in all fields.');
+      if (password !== confirm) {
+        alert("❌ Passwords do not match.");
         return;
       }
 
@@ -157,17 +151,18 @@
         email,
         password,
         options: {
-          data: { country },
-          emailRedirectTo: null
+          data: { country }
         }
       });
 
       if (error) {
-        alert('❌ Error creating account.\n' + error.message);
+        alert("❌ " + error.message);
         console.error(error);
       } else {
-        alert('✅ Account created! Redirecting to login...');
-        window.location.href = "login.html";
+        alert("✅ Account created successfully. Redirecting to login...");
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1000);
       }
     }
   </script>

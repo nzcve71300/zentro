@@ -74,21 +74,15 @@
       background: #3AD29F;
       transform: translateY(-2px);
     }
-    .auth-link {
-      margin-top: 1rem;
-      text-align: center;
-      font-size: 0.9rem;
-    }
-    .auth-link a {
-      color: #3AD29F;
-      text-decoration: none;
-    }
-    .auth-link a:hover {
-      text-decoration: underline;
-    }
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -105,10 +99,6 @@
       <input type="password" id="password" placeholder="Enter password" required />
 
       <button onclick="loginUser()">Login</button>
-
-      <div class="auth-link">
-        Don't have an account? <a href="register.html">Register</a>
-      </div>
     </div>
   </div>
 
@@ -124,24 +114,20 @@
       const password = document.getElementById('password').value;
 
       if (!email || !password) {
-        alert('❌ Please enter email and password.');
+        alert("❌ Please enter both email and password.");
         return;
       }
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
-        alert('❌ Login failed. Check your credentials.');
+        alert('❌ Login failed: ' + error.message);
         console.error(error);
-        return;
-      }
-
-      if (data.session) {
-        alert('✅ Login successful!');
-        window.location.href = 'builder.html';
+      } else {
+        alert('✅ Login successful. Redirecting...');
+        setTimeout(() => {
+          window.location.href = 'builder.html';
+        }, 1000);
       }
     }
   </script>

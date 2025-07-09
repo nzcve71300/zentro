@@ -16,7 +16,7 @@
         <h1>Invoice Builder</h1>
       </div>
       <div id="user-info" style="text-align: right;">
-        <!-- Filled by JS -->
+        <!-- User info appears here -->
       </div>
     </header>
 
@@ -62,13 +62,14 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
     );
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!session) {
+    async function fetchUserSession() {
+      const { data, error } = await supabase.auth.getSession();
+      if (error || !data.session) {
         window.location.href = "login.html";
         return;
       }
 
-      const { user } = session;
+      const { user } = data.session;
       const country = user.user_metadata?.country || 'Unknown';
 
       document.getElementById("user-info").innerHTML = `
@@ -76,12 +77,14 @@
         <div style="font-size: 0.85rem; color: #bbb;"><strong>Country:</strong> ${country}</div>
         <button onclick="logout()" style="margin-top: 8px; padding: 6px 12px; background:#f44; border:none; color:white; border-radius: 6px; font-weight:bold; cursor:pointer;">Logout</button>
       `;
-    });
+    }
 
     async function logout() {
       await supabase.auth.signOut();
       window.location.href = "login.html";
     }
+
+    fetchUserSession();
   </script>
 </body>
 </html>
