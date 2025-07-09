@@ -1,0 +1,166 @@
+body {
+  background-color: #1B1B1B;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.background-overlay {
+  background: linear-gradient(145deg, #0ABAB5, #3AD29F);
+  filter: blur(120px);
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  z-index: 0;
+  opacity: 0.07;
+}
+
+.invoice-app {
+  padding: 3rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  z-index: 1;
+  position: relative;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeIn 1s ease;
+}
+
+.logo {
+  width: 160px;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  opacity: 0.95;
+  box-shadow: 0 0 25px rgba(10, 186, 181, 0.1);
+}
+
+.invoice-panel {
+  background: #222;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(10, 186, 181, 0.15);
+  animation: fadeInUp 1.2s ease;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.section label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.section input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  border: none;
+  background: #2c2c2c;
+  color: #fff;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+.section input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #0ABAB5;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+.invoice-table th, .invoice-table td {
+  text-align: left;
+  padding: 0.8rem 0.5rem;
+  border-bottom: 1px solid #333;
+}
+
+.invoice-table input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: none;
+  background: #2c2c2c;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.invoice-table input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #0ABAB5;
+}
+
+.add-row {
+  background: #0ABAB5;
+  color: #000;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: block;
+  margin: 0 auto 2rem;
+}
+
+.add-row:hover {
+  background: #3AD29F;
+  transform: scale(1.03);
+}
+
+.totals {
+  text-align: right;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.download-btn {
+  background: #0ABAB5;
+  color: #000;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.download-btn:hover {
+  background: #3AD29F;
+  transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

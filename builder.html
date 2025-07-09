@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zentro Invoice Builder</title>
+  <link rel="stylesheet" href="builder.css" />
+</head>
+<body>
+  <div class="background-overlay"></div>
+
+  <main class="invoice-app">
+    <header class="app-header" style="justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <img src="assets/zentro-logo.png" alt="Zentro" class="logo" />
+        <h1>Invoice Builder</h1>
+      </div>
+      <div id="user-info" style="text-align: right;">
+        <!-- Filled by JS -->
+      </div>
+    </header>
+
+    <section class="invoice-panel">
+      <div class="section">
+        <label>From</label>
+        <input type="text" placeholder="Your business name" />
+      </div>
+      <div class="section">
+        <label>To</label>
+        <input type="text" placeholder="Client name" />
+      </div>
+
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="items"></tbody>
+      </table>
+
+      <button class="add-row" onclick="addItem()">+ Add Item</button>
+
+      <div class="totals">
+        <label>Subtotal:</label>
+        <span id="subtotal">R0.00</span>
+      </div>
+
+      <button class="download-btn" onclick="downloadHTML()">Download Invoice</button>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="builder.js"></script>
+  <script>
+    const supabase = supabase.createClient(
+      'https://toclbphgnqpzswkqktxk.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
+    );
+
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const { user } = session;
+      const country = user.user_metadata?.country || 'Unknown';
+
+      document.getElementById("user-info").innerHTML = `
+        <div style="margin-bottom: 4px; font-size: 0.95rem;"><strong>Welcome:</strong> ${user.email}</div>
+        <div style="font-size: 0.85rem; color: #bbb;"><strong>Country:</strong> ${country}</div>
+        <button onclick="logout()" style="margin-top: 8px; padding: 6px 12px; background:#f44; border:none; color:white; border-radius: 6px; font-weight:bold; cursor:pointer;">Logout</button>
+      `;
+    });
+
+    async function logout() {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
