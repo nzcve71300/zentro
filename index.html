@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zentro – Login</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
@@ -27,7 +27,7 @@
   <script>
     const supabase = supabase.createClient(
       'https://toclbphgnqpzswkqktxk.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
     );
 
     async function login() {
@@ -36,8 +36,19 @@
 
       const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-      if (error) return alert("❌ " + error.message);
-      window.location.href = "builder.html";
+      if (error) {
+        alert("❌ " + error.message);
+      } else {
+        window.location.href = "builder.html";
+      }
+    }
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("✅ Service Worker registered"))
+        .catch(err => console.error("❌ SW registration failed:", err));
     }
   </script>
 </body>
