@@ -118,59 +118,59 @@
         <option value="IN">India</option>
       </select>
 
-      <button onclick="registerAccount()">Register</button>
+      <button id="register-btn">Register</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const supabase = window.supabase.createClient(
-      'https://toclbphgnqpzswkqktxk.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
-    );
+    window.addEventListener('DOMContentLoaded', () => {
+      const supabase = window.supabase.createClient(
+        'https://toclbphgnqpzswkqktxk.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
+      );
 
-    function checkStrength() {
-      const val = document.getElementById('password').value;
-      const meter = document.getElementById('strength-meter');
-      if (val.length < 6) meter.innerText = 'Weak';
-      else if (val.length < 10) meter.innerText = 'Moderate';
-      else meter.innerText = 'Strong';
-    }
+      document.getElementById('register-btn').addEventListener('click', async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        const country = document.getElementById('country').value;
 
-    async function registerAccount() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const confirm = document.getElementById('confirmPassword').value;
-      const country = document.getElementById('country').value;
+        if (password !== confirm) {
+          alert('❌ Passwords do not match.');
+          return;
+        }
 
-      if (password !== confirm) {
-        alert('❌ Passwords do not match.');
-        return;
-      }
+        if (!email || !password || !country) {
+          alert('❌ Please fill in all fields.');
+          return;
+        }
 
-      if (!email || !password || !country) {
-        alert('❌ Please fill in all fields.');
-        return;
-      }
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { data: { country } }
+        });
 
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { country }
+        if (error) {
+          alert('❌ Error creating account.');
+          console.error(error);
+        } else {
+          alert('✅ Account created! Redirecting...');
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 1000);
         }
       });
 
-      if (error) {
-        alert('❌ Error creating account.');
-        console.error(error);
-      } else {
-        alert('✅ Account created! Redirecting to login...');
-        setTimeout(() => {
-          window.location.href = 'login.html';
-        }, 1000);
-      }
-    }
+      window.checkStrength = () => {
+        const val = document.getElementById('password').value;
+        const meter = document.getElementById('strength-meter');
+        if (val.length < 6) meter.innerText = 'Weak';
+        else if (val.length < 10) meter.innerText = 'Moderate';
+        else meter.innerText = 'Strong';
+      };
+    });
   </script>
 </body>
 </html>
