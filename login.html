@@ -74,26 +74,21 @@
       background: #3AD29F;
       transform: translateY(-2px);
     }
-    .auth-footer {
+    .auth-link {
       margin-top: 1rem;
       text-align: center;
       font-size: 0.9rem;
-      color: #ccc;
     }
-    .auth-footer a {
-      color: #0ABAB5;
+    .auth-link a {
+      color: #3AD29F;
       text-decoration: none;
-      font-weight: 500;
+    }
+    .auth-link a:hover {
+      text-decoration: underline;
     }
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -111,8 +106,8 @@
 
       <button onclick="loginUser()">Login</button>
 
-      <div class="auth-footer">
-        Don’t have an account? <a href="register.html">Register here</a>
+      <div class="auth-link">
+        Don't have an account? <a href="register.html">Register</a>
       </div>
     </div>
   </div>
@@ -128,13 +123,24 @@
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (!email || !password) {
+        alert('❌ Please enter email and password.');
+        return;
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
       if (error) {
         alert('❌ Login failed. Check your credentials.');
         console.error(error);
-      } else {
-        alert('✅ Login successful! Redirecting...');
+        return;
+      }
+
+      if (data.session) {
+        alert('✅ Login successful!');
         window.location.href = 'builder.html';
       }
     }
