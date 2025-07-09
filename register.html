@@ -157,15 +157,16 @@
         email,
         password,
         options: {
-          data: { country }
+          data: { country },
+          emailRedirectTo: null
         }
       });
 
       if (error) {
-        alert('❌ Error creating account.');
+        alert('❌ Error creating account.\n' + error.message);
         console.error(error);
       } else {
-        alert('✅ Account created! Please log in.');
+        alert('✅ Account created! Redirecting to login...');
         window.location.href = "login.html";
       }
     }

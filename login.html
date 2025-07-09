@@ -74,6 +74,17 @@
       background: #3AD29F;
       transform: translateY(-2px);
     }
+    .auth-footer {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .auth-footer a {
+      color: #0ABAB5;
+      text-decoration: none;
+      font-weight: 500;
+    }
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -99,6 +110,10 @@
       <input type="password" id="password" placeholder="Enter password" required />
 
       <button onclick="loginUser()">Login</button>
+
+      <div class="auth-footer">
+        Don’t have an account? <a href="register.html">Register here</a>
+      </div>
     </div>
   </div>
 
@@ -119,7 +134,7 @@
         alert('❌ Login failed. Check your credentials.');
         console.error(error);
       } else {
-        alert('✅ Login successful!');
+        alert('✅ Login successful! Redirecting...');
         window.location.href = 'builder.html';
       }
     }
