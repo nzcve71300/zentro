@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zentro – Register</title>
+  <title>Zentro – Sign In with Google</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
@@ -17,12 +17,14 @@
       height: 100vh;
       overflow: hidden;
     }
+
     .auth-container {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
     }
+
     .auth-card {
       background: rgba(0, 0, 0, 0.8);
       border: 1px solid #0ABAB5;
@@ -32,75 +34,46 @@
       max-width: 400px;
       box-shadow: 0 0 20px rgba(10, 186, 181, 0.3);
       animation: fadeInUp 0.8s ease;
+      text-align: center;
     }
+
     .auth-logo {
       display: block;
       margin: 0 auto 1rem;
       width: 120px;
     }
+
     .auth-title {
-      text-align: center;
       font-size: 1.5rem;
       color: #0ABAB5;
       margin-bottom: 2rem;
     }
-    input, select {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0 1rem;
-      border-radius: 8px;
-      border: none;
-      background: #111;
-      color: white;
-      border: 1px solid #0ABAB5;
-      transition: border 0.2s ease;
-    }
-    input:focus, select:focus {
-      border-color: #3AD29F;
-      outline: none;
-    }
-    button {
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 8px;
-      background: #0ABAB5;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-      margin-bottom: 0.5rem;
-    }
-    button:hover {
-      background: #3AD29F;
-      transform: translateY(-2px);
-    }
+
     .google-btn {
-      background: #fff;
-      color: #000;
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       gap: 10px;
+      transition: background 0.3s ease;
     }
-    .google-btn img {
-      width: 20px;
-      height: 20px;
+
+    .google-btn:hover {
+      background: #eee;
     }
-    #strength-meter {
-      text-align: center;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+
+    .google-icon {
+      width: 24px;
+      height: 24px;
     }
-    .auth-link {
-      text-align: center;
-      font-size: 0.9rem;
-      margin-top: 1rem;
-    }
-    .auth-link a {
-      color: #0ABAB5;
-      text-decoration: none;
-    }
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
@@ -111,104 +84,34 @@
   <div class="auth-container">
     <div class="auth-card">
       <img src="assets/zentro-logo.png" alt="Zentro Logo" class="auth-logo" />
-      <h2 class="auth-title">Create your Zentro account</h2>
+      <h2 class="auth-title">Continue with Google</h2>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="you@example.com" required />
-
-      <label>Create Password</label>
-      <input type="password" id="password" placeholder="Create password" />
-      <div id="strength-meter"></div>
-
-      <label>Confirm Password</label>
-      <input type="password" id="confirmPassword" placeholder="Confirm password" />
-
-      <label>Select your country</label>
-      <select id="country">
-        <option value="">-- Select Country --</option>
-        <option value="ZA">South Africa</option>
-        <option value="US">United States</option>
-        <option value="UK">United Kingdom</option>
-        <option value="CA">Canada</option>
-        <option value="AU">Australia</option>
-        <option value="IN">India</option>
-      </select>
-
-      <button id="register-btn">Register</button>
-      <button class="google-btn" id="google-register">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
-        Sign up with Google
+      <button class="google-btn" id="google-login">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" alt="Google" class="google-icon" />
+        Sign in with Google
       </button>
-
-      <div class="auth-link">
-        Already have an account? <a href="login.html">Login</a>
-      </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script defer>
-    window.addEventListener('DOMContentLoaded', () => {
-      const client = window.supabase.createClient(
-        'https://toclbphgnqpzswkqktxk.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
-      );
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = supabase.createClient(
+      'https://toclbphgnqpzswkqktxk.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
+    );
 
-      document.getElementById('register-btn').addEventListener('click', async () => {
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-        const confirm = document.getElementById("confirmPassword").value;
-        const country = document.getElementById("country").value;
-
-        if (!email || !password || !confirm || !country) {
-          alert("❌ Please fill in all fields.");
-          return;
-        }
-
-        if (password !== confirm) {
-          alert("❌ Passwords do not match.");
-          return;
-        }
-
-        const { data, error } = await client.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: null,
-            data: { country }
-          }
-        });
-
-        if (error) {
-          alert("❌ Error creating account.");
-          console.error(error);
-        } else {
-          const { error: loginError } = await client.auth.signInWithPassword({ email, password });
-          if (loginError) {
-            alert("✅ Registered but login failed: " + loginError.message);
-          } else {
-            alert("✅ Registered and logged in! Redirecting...");
-            window.location.href = "builder.html";
-          }
+    document.getElementById('google-login').addEventListener('click', async () => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: 'https://zentro-rose.vercel.app/builder.html'
         }
       });
 
-      document.getElementById('google-register').addEventListener('click', async () => {
-        const { error } = await client.auth.signInWithOAuth({
-          provider: 'google'
-        });
-        if (error) {
-          alert("❌ Google sign-up failed: " + error.message);
-        }
-      });
-
-      document.getElementById('password').addEventListener('input', () => {
-        const val = document.getElementById('password').value;
-        const meter = document.getElementById('strength-meter');
-        if (val.length < 6) meter.innerText = '❌ Too weak';
-        else if (val.length < 10) meter.innerText = '⚠️ Medium';
-        else meter.innerText = '✅ Strong';
-      });
+      if (error) {
+        alert("❌ Failed to sign in with Google.");
+        console.error(error);
+      }
     });
   </script>
 </body>
