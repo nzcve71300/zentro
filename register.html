@@ -125,9 +125,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script defer>
     window.addEventListener('DOMContentLoaded', () => {
-      const SUPABASE_URL = 'https://toclbphgnqpzswkqktxk.supabase.co';
-      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04';
-      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const client = window.supabase.createClient(
+        'https://toclbphgnqpzswkqktxk.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
+      );
 
       document.getElementById('register-btn').addEventListener('click', async () => {
         const email = document.getElementById("email").value.trim();
