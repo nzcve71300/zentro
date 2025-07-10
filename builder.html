@@ -70,11 +70,23 @@
       }
 
       const { user } = data.session;
-      const country = user.user_metadata?.country || 'Unknown';
+      const email = user.email;
+      let country = user.user_metadata?.country || null;
+
+      // Save country if missing and we came from register.html
+      const urlParams = new URLSearchParams(window.location.search);
+      const newCountry = urlParams.get("country");
+
+      if (!country && newCountry) {
+        const { error: updateError } = await supabase.auth.updateUser({
+          data: { country: newCountry }
+        });
+        if (!updateError) country = newCountry;
+      }
 
       document.getElementById("user-info").innerHTML = `
-        <div style="margin-bottom: 4px; font-size: 0.95rem;"><strong>Welcome:</strong> ${user.email}</div>
-        <div style="font-size: 0.85rem; color: #bbb;"><strong>Country:</strong> ${country}</div>
+        <div style="margin-bottom: 4px; font-size: 0.95rem;"><strong>Welcome:</strong> ${email}</div>
+        <div style="font-size: 0.85rem; color: #bbb;"><strong>Country:</strong> ${country || 'Unknown'}</div>
         <button onclick="logout()" style="margin-top: 8px; padding: 6px 12px; background:#f44; border:none; color:white; border-radius: 6px; font-weight:bold; cursor:pointer;">Logout</button>
       `;
     }

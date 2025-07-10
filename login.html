@@ -69,20 +69,36 @@
       font-weight: bold;
       cursor: pointer;
       transition: background 0.3s ease, transform 0.2s ease;
+      margin-bottom: 0.5rem;
     }
     button:hover {
       background: #3AD29F;
       transform: translateY(-2px);
     }
+    .google-btn {
+      background: #fff;
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .google-btn img {
+      width: 20px;
+      height: 20px;
+    }
+    .auth-link {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+    .auth-link a {
+      color: #0ABAB5;
+      text-decoration: none;
+    }
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -99,6 +115,14 @@
       <input type="password" id="password" placeholder="Enter password" required />
 
       <button id="login-btn">Login</button>
+      <button class="google-btn" id="google-login">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
+        Sign in with Google
+      </button>
+
+      <div class="auth-link">
+        Don't have an account? <a href="register.html">Register</a>
+      </div>
     </div>
   </div>
 
@@ -110,7 +134,10 @@
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
       );
 
-      document.getElementById('login-btn').addEventListener('click', async () => {
+      const loginBtn = document.getElementById('login-btn');
+      const googleBtn = document.getElementById('google-login');
+
+      loginBtn.addEventListener('click', async () => {
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value.trim();
 
@@ -123,12 +150,20 @@
 
         if (error) {
           alert('❌ Login failed: ' + error.message);
-          console.error(error);
         } else {
           alert('✅ Login successful. Redirecting...');
           setTimeout(() => {
             window.location.href = 'builder.html';
           }, 1000);
+        }
+      });
+
+      googleBtn.addEventListener('click', async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google'
+        });
+        if (error) {
+          alert('❌ Google sign-in failed: ' + error.message);
         }
       });
     });
