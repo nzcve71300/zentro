@@ -124,45 +124,50 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const supabase = window.supabase.createClient(
-        'https://toclbphgnqpzswkqktxk.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
-      );
+    // Global supabase client
+    const supabase = window.supabase.createClient(
+      'https://toclbphgnqpzswkqktxk.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
+    );
 
+    window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('register-btn').addEventListener('click', async () => {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirm = document.getElementById('confirmPassword').value;
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const confirm = document.getElementById('confirmPassword').value.trim();
         const country = document.getElementById('country').value;
+
+        if (!email || !password || !confirm || !country) {
+          alert('❌ Please fill in all fields.');
+          return;
+        }
 
         if (password !== confirm) {
           alert('❌ Passwords do not match.');
           return;
         }
 
-        if (!email || !password || !country) {
-          alert('❌ Please fill in all fields.');
-          return;
-        }
-
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { data: { country } }
+          options: {
+            emailRedirectTo: null, // No email confirmation
+            data: { country }
+          }
         });
 
         if (error) {
-          alert('❌ Error creating account.');
+          alert('❌ Error creating account. Please try again.');
           console.error(error);
         } else {
           alert('✅ Account created! Redirecting...');
           setTimeout(() => {
             window.location.href = 'login.html';
-          }, 1000);
+          }, 1200);
         }
       });
 
+      // Password strength checker
       window.checkStrength = () => {
         const val = document.getElementById('password').value;
         const meter = document.getElementById('strength-meter');
