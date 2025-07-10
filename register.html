@@ -127,8 +127,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       const SUPABASE_URL = 'https://toclbphgnqpzswkqktxk.supabase.co';
       const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04';
-
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
       document.getElementById('register-btn').addEventListener('click', async () => {
         const email = document.getElementById("email").value.trim();
@@ -146,7 +145,7 @@
           return;
         }
 
-        const { error } = await supabase.auth.signUp({
+        const { error } = await client.auth.signUp({
           email,
           password,
           options: {
@@ -166,13 +165,12 @@
         }
       });
 
-      // Password strength checker
       document.getElementById('password').addEventListener('input', () => {
-        const strength = document.getElementById("strength-meter");
-        const val = document.getElementById("password").value;
-        if (val.length < 6) strength.textContent = "❌ Too weak";
-        else if (val.length < 10) strength.textContent = "⚠️ Medium";
-        else strength.textContent = "✅ Strong";
+        const val = document.getElementById('password').value;
+        const meter = document.getElementById('strength-meter');
+        if (val.length < 6) meter.innerText = '❌ Too weak';
+        else if (val.length < 10) meter.innerText = '⚠️ Medium';
+        else meter.innerText = '✅ Strong';
       });
     });
   </script>
