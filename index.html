@@ -3,50 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zentro – Login</title>
+  <title>Zentro – Sign In</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(ellipse at top, #0A0F1C 0%, #000 100%);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .auth-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .auth-card {
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid #0ABAB5;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(10, 186, 181, 0.3);
+      animation: fadeInUp 0.8s ease;
+      text-align: center;
+    }
+
+    .auth-logo {
+      display: block;
+      margin: 0 auto 1rem;
+      width: 120px;
+    }
+
+    .auth-title {
+      font-size: 1.5rem;
+      color: #0ABAB5;
+      margin-bottom: 2rem;
+    }
+
+    .google-btn {
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.3s ease;
+    }
+
+    .google-btn:hover {
+      background: #eee;
+    }
+
+    .google-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
   <div class="auth-container">
     <div class="auth-card">
       <img src="assets/zentro-logo.png" alt="Zentro Logo" class="auth-logo" />
-      <h2 class="auth-title">Login to Zentro</h2>
+      <h2 class="auth-title">Welcome to Zentro</h2>
 
-      <input type="email" id="login-email" placeholder="you@example.com" />
-      <input type="password" id="login-password" placeholder="Your password" />
-      <button id="login-btn">Login</button>
-
-      <div class="auth-link">
-        Don't have an account? <a href="register.html">Register</a>
-      </div>
+      <button class="google-btn" id="google-login">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" alt="Google" class="google-icon" />
+        Sign in with Google
+      </button>
     </div>
   </div>
 
   <script defer>
-    window.addEventListener('DOMContentLoaded', () => {
-      const client = window.supabase.createClient(
-        'https://toclbphgnqpzswkqktxk.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
-      );
+    const client = window.supabase.createClient(
+      'https://toclbphgnqpzswkqktxk.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04'
+    );
 
-      document.getElementById('login-btn').addEventListener('click', async () => {
-        const email = document.getElementById('login-email').value.trim();
-        const password = document.getElementById('login-password').value.trim();
-
-        if (!email || !password) {
-          alert("❌ Please enter both email and password.");
-          return;
-        }
-
-        const { error } = await client.auth.signInWithPassword({ email, password });
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('google-login').addEventListener('click', async () => {
+        const { error } = await client.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: 'https://zentro-rose.vercel.app/builder.html'
+          }
+        });
 
         if (error) {
-          alert("❌ " + error.message);
-        } else {
-          alert("✅ Login successful. Redirecting...");
-          window.location.href = "builder.html";
+          alert("❌ Google sign-in failed.");
+          console.error(error);
         }
       });
     });
