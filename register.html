@@ -80,14 +80,8 @@
       margin-bottom: 1rem;
     }
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -146,7 +140,7 @@
           return;
         }
 
-        const { error } = await client.auth.signUp({
+        const { data, error } = await client.auth.signUp({
           email,
           password,
           options: {
@@ -159,10 +153,13 @@
           alert("❌ Error creating account.");
           console.error(error);
         } else {
-          alert("✅ Account created! Redirecting...");
-          setTimeout(() => {
-            window.location.href = "login.html";
-          }, 1000);
+          const { error: loginError } = await client.auth.signInWithPassword({ email, password });
+          if (loginError) {
+            alert("✅ Registered but login failed: " + loginError.message);
+          } else {
+            alert("✅ Registered and logged in! Redirecting...");
+            window.location.href = "builder.html";
+          }
         }
       });
 
