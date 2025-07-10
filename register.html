@@ -125,25 +125,24 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script defer>
     window.addEventListener('DOMContentLoaded', () => {
-      // Supabase client init
       const SUPABASE_URL = 'https://toclbphgnqpzswkqktxk.supabase.co';
       const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvY2xicGhnbnFwenN3a3FrdHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwOTQ5NTgsImV4cCI6MjA2NzY3MDk1OH0.SFnaG6dy0FffPBfZXN3mpdEIYG95H9X7Jl_c7F_NP04';
+
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      // Register click handler
       document.getElementById('register-btn').addEventListener('click', async () => {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const confirm = document.getElementById('confirmPassword').value.trim();
-        const country = document.getElementById('country').value;
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirm = document.getElementById("confirmPassword").value;
+        const country = document.getElementById("country").value;
 
         if (!email || !password || !confirm || !country) {
-          alert('❌ Please fill in all fields.');
+          alert("❌ Please fill in all fields.");
           return;
         }
 
         if (password !== confirm) {
-          alert('❌ Passwords do not match.');
+          alert("❌ Passwords do not match.");
           return;
         }
 
@@ -151,27 +150,28 @@
           email,
           password,
           options: {
-            emailRedirectTo: null, // no confirmation email
+            emailRedirectTo: null,
             data: { country }
           }
         });
 
         if (error) {
-          alert("❌ " + error.message);
+          alert("❌ Error creating account.");
+          console.error(error);
         } else {
-          alert('✅ Account created! Redirecting...');
+          alert("✅ Account created! Redirecting...");
           setTimeout(() => {
-            window.location.href = 'login.html';
+            window.location.href = "login.html";
           }, 1000);
         }
       });
 
-      // Password strength meter
+      // Password strength checker
       document.getElementById('password').addEventListener('input', () => {
         const strength = document.getElementById("strength-meter");
-        const password = document.getElementById("password").value;
-        if (password.length < 6) strength.textContent = "❌ Too weak";
-        else if (password.length < 10) strength.textContent = "⚠️ Medium";
+        const val = document.getElementById("password").value;
+        if (val.length < 6) strength.textContent = "❌ Too weak";
+        else if (val.length < 10) strength.textContent = "⚠️ Medium";
         else strength.textContent = "✅ Strong";
       });
     });
